@@ -1,0 +1,48 @@
+{
+  "name": "sequelize-migrator",
+  "version": "1.0.0",
+  "description": "Migrate SequelizeJS migrations without SequelizeMeta table dependency.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make all"
+  },
+  "author": "Daniel Durante <me@danieldurante.com>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "sequelize": "~2.0.0-beta.7",
+    "commander": "~2.1.0",
+    "mysql": "~2.0.0-rc2",
+    "mariasql": "git://github.com/mscdex/node-mariasql.git",
+    "sqlite3": "~2.1.19",
+    "pg": "~2.10.0"
+  },
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.16.2"
+  },
+  "keywords": [
+    "mysql",
+    "postgres",
+    "maria",
+    "orm",
+    "nodejs",
+    "object relational mapper",
+    "migrate",
+    "migrator",
+    "migration",
+    "schema"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/durango/sequelize-migrator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/durango/sequelize-migrator/issues"
+  },
+  "bin": {
+    "sequelize-migrator": "bin/sequelize-migrator"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}

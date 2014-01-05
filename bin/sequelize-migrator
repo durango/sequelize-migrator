@@ -1,0 +1,130 @@
+#!/usr/bin/env node
+
+var path        = require('path')
+  , fs          = require('fs')
+  , program     = require('commander')
+  , Sequelize   = require('sequelize')
+  , Migrator    = require(path.resolve(path.join(__dirname, '..', 'node_modules', 'sequelize', 'lib', 'migrator')))
+  , Migration   = require(path.resolve(path.join(__dirname, '..', 'node_modules', 'sequelize', 'lib', 'migration')))
+  , Utils       = require(path.resolve(path.join(__dirname, '..', 'node_modules', 'sequelize', 'lib', 'utils')))
+  , lib         = require(path.resolve(path.join(__dirname, '..', 'index')))
+  , pkgJson     = require(path.resolve(path.join(__dirname, '..', 'package.json')));
+
+program
+  .version(pkgJson.version)
+  .usage('[options] <up|down>')
+  .option('-c, --config [config]', 'Specify a config file for database credentials')
+  .option('-p, --path [path]', 'Specify a specific migrations folder.')
+  .parse(process.argv);
+
+program.on('--help', function() {
+  console.log(' Additional options:');
+  console.log('');
+  console.log('   SEQ_URL   - Specify a URL/URI for connecting to your database.');
+  console.log('   SEQ_DB    - Specify database name');
+  console.log('   SEQ_USER  - Specify database username');
+  console.log('   SEQ_PW    - Specify database password');
+  console.log('   SEQ_HOST  - Specify database host');
+  console.log('   SEQ_PORT  - Specify database port');
+  console.log('');
+});
+
+var config    = new lib.config(program.config)
+  , cmd       = program.args[0]
+  , sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host,
+    port: config.port,
+    dialect: config.dialect
+  });
+
+if (cmd !== "up" && cmd !== "down") {
+  throw new Error('Invalid command, must be up or down');
+}
+
+if (!program.path) {
+  program.path = path.resolve(process.cwd(), 'migrations');
+}
+
+var migrator = sequelize.getMigrator({
+  path: program.path,
+  filesFilter: (cmd === "up" ? /\.js$/ : /\.js\.done$/)
+});
+
+  var migrate = function(migrations, options) {
+    var self = this
+
+    options = typeof options === "object" ? options : {};
+    options.method = cmd;
+
+    return new Utils.CustomEventEmitter(function (emitter) {
+          var chainer = new Utils.QueryChainer()
+
+          migrations
+          .map(function (migration) {
+            // migrations deals with paths...in a retarded manner..
+            migration.path = path.resolve(path.join(program.path, migration.filename));
+            return migration;
+          })
+          .forEach(function (migration) {
+            var migrationTime;
+
+            chainer.add(migration, 'execute', [options], {
+              before: function(migration) {
+                console.log('Running migration file ' + migration.filename);
+                migrationTime = process.hrtime()
+              },
+
+              after: function(migration) {
+                migrationTime = process.hrtime(migrationTime)
+                migrationTime = Math.round( (migrationTime[0] * 1000) + (migrationTime[1] / 1000000));
+                console.log('Completed in ' + migrationTime + 'ms')
+              },
+
+              success: function(migration, callback) {
+                if (options.method === 'down') {
+                  fs.renameSync(migration.path, migration.path.replace(/\.done$/, ''));
+                  callback();
+                } else {
+                  fs.renameSync(migration.path, (migration.path + '.done'));
+                  callback();
+                }
+              }
+            })
+          })
+
+          chainer
+            .runSerially({ skipOnError: true })
+            .success(function() { emitter.emit('success', null) })
+            .error(function(err) { emitter.emit('error', err) })
+    }).run()
+  }
+
+var files = fs.readdirSync(program.path).filter(function (file) {
+  return ((cmd === "up" ? /\.js$/ : /\.js\.done$/)).test(file);
+})
+.map(function (file) {
+  return new Migration(migrator, path.resolve(path.join(program.path, file)));
+})
+.sort(function (a, b){
+  return parseInt(a.filename.split('-')[0]) - parseInt(b.filename.split('-')[0])
+});
+
+if (files.length < 1) {
+  process.stdout.write('There are currently no pending migrations.');
+  process.exit(0);
+}
+
+if (cmd === "down") {
+  files.reverse();
+}
+
+console.log('Running migrations...');
+
+migrate(files, { method: cmd }).success(function() {
+  console.log('Migrations have run successfully!')
+  process.exit(0);
+})
+.error(function (err) {
+  console.error(err);
+  process.exit(1);
+});
