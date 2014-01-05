@@ -23,7 +23,7 @@ Migrate SequelizeJS migrations without SequelizeMeta table dependency.
 
 ```$: sequelize-migrator -c ../../global_config.json -p ../migrations up```
 
-## config file
+## Config File Example
 
 ```
 module.exports = {
