@@ -10,9 +10,9 @@ notifications:
     - me@danieldurante.com
 
 env:
-  - DB=mysql DIALECT=mysql
-  - DB=mysql DIALECT=postgres SEQ_USER=postgres
-  - DB=mysql DIALECT=mariadb
+  - SEQ_DB=sequelize_test SEQ_DIALECT=mysql
+  - SEQ_DB=sequelize_test SEQ_DIALECT=postgres SEQ_USER=postgres
+  - SEQ_DB=sequelize_test SEQ_DIALECT=mariadb
 
 language: node_js
 
