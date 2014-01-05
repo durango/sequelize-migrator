@@ -1,4 +1,4 @@
-# sequelize-migrator
+# sequelize-migrator [![Build Status](https://travis-ci.org/durango/sequelize-migrator.png?branch=master)](https://travis-ci.org/durango/sequelize-migrator)
 
 Migrate SequelizeJS migrations without SequelizeMeta table dependency.
 
