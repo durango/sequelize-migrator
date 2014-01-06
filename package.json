@@ -1,7 +1,7 @@
 {
   "name": "sequelize-migrator",
   "version": "1.0.0",
-  "description": "Migrate SequelizeJS migrations without SequelizeMeta table dependency.",
+  "description": "Migrate SequelizeJS migrations without SequelizeMeta table dependency and depdency management.",
   "main": "index.js",
   "scripts": {
     "test": "make all"
@@ -14,7 +14,8 @@
     "mysql": "~2.0.0-rc2",
     "mariasql": "git://github.com/mscdex/node-mariasql.git",
     "sqlite3": "~2.1.19",
-    "pg": "~2.10.0"
+    "pg": "~2.10.0",
+    "deptree": "~0.1.0"
   },
   "devDependencies": {
     "chai": "~1.8.1",

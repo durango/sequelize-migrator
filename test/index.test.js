@@ -63,30 +63,54 @@ describe('sequelize-migrator', function() {
 
     it('should be able to automatically find $PWD/migrations folder...', function (done) {
       exec(cmd + ' -c ./config.js up', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151203-userTable.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151199-depTest2.js',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
 
     it('should be able to grab migrations from a specified relative path...', function (done) {
       exec(cmd + ' -c ./config.js -p ./assets up', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable-assets.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail-assets.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151203-userTable-assets.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail-assets.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest-assets.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151199-depTest2-assets.js',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
 
     it('should be able to grab migrations from a specified absolute path...', function (done) {
       exec(cmd + ' -c ./config.js -p ' + path.resolve(path.join(__dirname, 'assets')) + ' up', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable-assets.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail-assets.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151203-userTable-assets.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail-assets.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest-assets.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151199-depTest2-assets.js',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
@@ -104,21 +128,24 @@ describe('sequelize-migrator', function() {
       }
 
       exec(env.join(' ') + ' ' + cmd + ' up', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151203-userTable.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest.js',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151199-depTest2.js',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
 
     it('should say no pending migrations after we\'ve migrated...', function (done) {
       exec(cmd + ' -c ./config.js up', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail.js');
-        expect(stdout).to.include('Migrations have run successfully!');
-
         exec(cmd + ' -c ./config.js up', function (err, stdout, stderr) {
           expect(stdout).to.include('There are currently no pending migrations.');
           done();
@@ -138,30 +165,54 @@ describe('sequelize-migrator', function() {
 
     it('should be able to automatically find $PWD/migrations folder...', function (done) {
       exec(cmd + ' -c ./config.js down', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151199-depTest2.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151203-userTable.js.done',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
 
     it('should be able to grab migrations from a specified relative path...', function (done) {
       exec(cmd + ' -c ./config.js -p ./assets down', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable-assets.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail-assets.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151199-depTest2-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151203-userTable-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
 
     it('should be able to grab migrations from a specified absolute path...', function (done) {
       exec(cmd + ' -c ./config.js -p ' + path.resolve(path.join(__dirname, 'assets')) + ' down', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable-assets.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail-assets.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151199-depTest2-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151203-userTable-assets.js.done',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
@@ -179,21 +230,24 @@ describe('sequelize-migrator', function() {
       }
 
       exec(env.join(' ') + ' ' + cmd + ' down', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail.js');
-        expect(stdout).to.include('Migrations have run successfully!');
+        expect(stdout).to.match(new RegExp([
+          'Running migrations...',
+          'Running migration file 20140105151199-depTest2.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151200-depTest.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151356-usersAddEmail.js.done',
+          'Completed in (\\d+)ms',
+          'Running migration file 20140105151203-userTable.js.done',
+          'Completed in (\\d+)ms',
+          'Migrations have run successfully!'
+        ].join('\\n')));
         done();
       });
     });
 
     it('should say no pending migrations after we\'ve migrated...', function (done) {
       exec(cmd + ' -c ./config.js down', function (err, stdout, stderr) {
-        expect(stdout).to.include('Running migrations');
-        expect(stdout).to.include('Running migration file 20140105151203-userTable.js');
-        expect(stdout).to.include('Running migration file 20140105151356-usersAddEmail.js');
-        expect(stdout).to.include('Migrations have run successfully!');
-
         exec(cmd + ' -c ./config.js down', function (err, stdout, stderr) {
           expect(stdout).to.include('There are currently no pending migrations.');
           done();
