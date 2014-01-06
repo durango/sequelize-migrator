@@ -1,6 +1,6 @@
 # sequelize-migrator [![Build Status](https://travis-ci.org/durango/sequelize-migrator.png?branch=master)](https://travis-ci.org/durango/sequelize-migrator)
 
-Migrate SequelizeJS migrations without SequelizeMeta table dependency.
+Migrate SequelizeJS migrations without SequelizeMeta table dependency and depdency management.
 
 ## Install
 
@@ -17,6 +17,15 @@ Migrate SequelizeJS migrations without SequelizeMeta table dependency.
     -V, --version          output the version number
     -c, --config [config]  Specify a config file for database credentials
     -p, --path [path]      Specify a specific migrations folder.
+
+ Additional options:
+
+   SEQ_URL   - Specify a URL/URI for connecting to your database.
+   SEQ_DB    - Specify database name
+   SEQ_USER  - Specify database username
+   SEQ_PW    - Specify database password
+   SEQ_HOST  - Specify database host
+   SEQ_PORT  - Specify database port
 ```
 
 ## Examples

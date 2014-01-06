@@ -15,8 +15,7 @@ program
   .version(pkgJson.version)
   .usage('[options] <up|down>')
   .option('-c, --config [config]', 'Specify a config file for database credentials')
-  .option('-p, --path [path]', 'Specify a specific migrations folder.')
-  .parse(process.argv);
+  .option('-p, --path [path]', 'Specify a specific migrations folder.');
 
 program.on('--help', function() {
   console.log(' Additional options:');
@@ -29,6 +28,8 @@ program.on('--help', function() {
   console.log('   SEQ_PORT  - Specify database port');
   console.log('');
 });
+
+program.parse(process.argv);
 
 var config    = new lib.config(program.config)
   , cmd       = program.args[0]
