@@ -1,4 +1,6 @@
-# sequelize-migrator [![Build Status](https://travis-ci.org/durango/sequelize-migrator.png?branch=master)](https://travis-ci.org/durango/sequelize-migrator)
+# sequelize-migrator
+
+[![Build Status](http://img.shields.io/travis/durango/sequelize-migrator.svg)](https://travis-ci.org/durango/sequelize-migrator) [![Dependency Status](https://david-dm.org/durango/sequelize-migrator.svg?theme=shields.io)](https://david-dm.org/CleverStack/cleverstack-cli) [![devDependency Status](https://david-dm.org/durango/sequelize-migrator/dev-status.svg?theme=shields.io)](https://david-dm.org/durango/sequelize-migrator#info=devDependencies)
 
 Migrate SequelizeJS migrations without SequelizeMeta table dependency and depdency management.
 
