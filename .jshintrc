@@ -8,7 +8,10 @@
         "beforeEach": false,
         "waits": false,
         "waitsFor": false,
-        "runs": false
+        "runs": false,
+        "afterEach": false,
+        "after": false,
+        "before": false
     },
     "node": true,
     "camelcase": true,

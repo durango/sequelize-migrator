@@ -31,7 +31,7 @@ var Support = {
     var dialect = Support.getTestDialect()
 
     if (dialect === 'sqlite') {
-      var options    = Sequelize.Utils._.extend({}, sequelize.options, { storage: path.join(__dirname, 'tmp', 'db.sqlite') })
+      var options    = Sequelize.Utils._.extend({}, sequelize.options, { logging: false, storage: path.join(__dirname, 'tmp', 'db.sqlite') })
         , _sequelize = new Sequelize(sequelize.config.datase, null, null, options)
 
       _sequelize.sync({ force: true }).success(function() { callback(_sequelize) })
@@ -44,7 +44,7 @@ var Support = {
     options = options || {}
     options.dialect = options.dialect || 'mysql'
 
-    options.logging = (options.hasOwnProperty('logging') ? options.logging : false)
+    options.logging = false;
 
     var sequelizeOptions = {
       host:           options.host || config.host,
