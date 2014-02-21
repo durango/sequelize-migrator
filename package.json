@@ -11,7 +11,7 @@
   "dependencies": {
     "sequelize": "~2.0.0-beta.7",
     "commander": "~2.1.0",
-    "mysql": "~2.0.0-rc2",
+    "mysql": "~2.1.0",
     "mariasql": "~0.1.20",
     "sqlite3": "~2.2.0",
     "pg": "~2.11.1",
